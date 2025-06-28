@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
+
 int main()
 {
     if (!glfwInit()) {
@@ -17,9 +18,9 @@ int main()
     }
 
     glfwMakeContextCurrent(win);
-
+    glClearColor(0.5, 0.5, 1.0, 1.0);
     while (!glfwWindowShouldClose(win)) {
-        // glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(win);
         glfwPollEvents();
