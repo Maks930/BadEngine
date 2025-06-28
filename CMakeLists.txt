@@ -5,15 +5,25 @@ project(BadEngine LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_subdirectory(Engine)
-# add_subdirectory(libs)
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+set(BUILD_SHARED_LIBS ON)
+
+add_subdirectory(libs)
+# set_target_properties(glfw PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+
+
+set(GLFW_BUILD_TESTS OFF)
+# set(BUILD_SHARED_LIBS ON)
+
+add_subdirectory(Engine)
 
 include_directories(./Engine)
 
 add_executable(BadEngine main.cpp)
-target_link_libraries(BadEngine system)
-
+target_link_libraries(BadEngine system graphics)
 
 include(GNUInstallDirs)
 install(TARGETS BadEngine
