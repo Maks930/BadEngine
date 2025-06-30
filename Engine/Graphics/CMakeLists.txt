@@ -7,8 +7,15 @@ add_library(graphics SHARED ${headers} ${sources})
 set_target_properties(graphics PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 target_include_directories(graphics
-    PRIVATE
+    PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    )
+)
 
-target_link_libraries(graphics PUBLIC glfw libglew_shared)
+target_link_libraries(graphics
+    PUBLIC
+        glfw
+        libglew_shared
+        glm::glm
+    PRIVATE
+        core
+)

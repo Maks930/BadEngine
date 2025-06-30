@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 
-
 class MountManager
 {
     // InProgramm path -> System Path
@@ -27,10 +26,10 @@ public:
 
 };
 
-std::string operator""_rdir(const char* str,std::size_t len)
-{
-    return MountManager::resolve(str);
-}
+// std::string operator""_rdir(const char* str,std::size_t len)
+// {
+//     return MountManager::resolve(str);
+// }
 
 #define rdir(x) MountManager::resolve(x)
 

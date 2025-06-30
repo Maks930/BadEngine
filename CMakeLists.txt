@@ -10,6 +10,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 
+set(GLM_ENABLE_CXX_20 ON)
 set(BUILD_SHARED_LIBS ON)
 
 set(glew-cmake_BUILD_SHARED ON CACHE BOOL "" FORCE)
@@ -26,7 +27,7 @@ add_subdirectory(Engine)
 include_directories(./Engine)
 
 add_executable(BadEngine main.cpp)
-target_link_libraries(BadEngine system graphics)
+target_link_libraries(BadEngine core system graphics)
 
 include(GNUInstallDirs)
 install(TARGETS BadEngine

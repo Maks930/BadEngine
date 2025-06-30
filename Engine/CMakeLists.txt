@@ -1,3 +1,3 @@
-
-add_subdirectory(Graphics)
+add_subdirectory(Core)
 add_subdirectory(System)
+add_subdirectory(Graphics)
