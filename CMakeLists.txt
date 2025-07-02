@@ -16,7 +16,6 @@ set(BUILD_SHARED_LIBS ON)
 set(glew-cmake_BUILD_SHARED ON CACHE BOOL "" FORCE)
 set(glew-cmake_BUILD_STATIC OFF CACHE BOOL "" FORCE)
 set(ONLY_LIBS  ON CACHE BOOL "" FORCE)
-
 add_subdirectory(libs)
 
 set(GLFW_BUILD_TESTS OFF)

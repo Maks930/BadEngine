@@ -1,28 +1,32 @@
 #include <iostream>
+#define GLEW_SHARED
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <Core/MountManager/mountmanager.h>
 #include <System/Window/window.h>
 #include <System/Events/events.h>
-#include <Core/Color/color.h>
+#include <Graphics/Shader/shader.h>
 
+float vert2[] = {
+    0.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f,
+    0.0f, 1.0f, 0.0f,
+};
 
 int main()
 {
 
+    MountManager::mount("/shaders", std::string(std::getenv("USERPROFILE"))+"\\Desktop\\shaders");
+
+
     Window win({640, 480}, "Base Window");
-    Events events(&win);
 
-    Color c(175, 255, 55, 98);
 
-    std::cout << (int)c.red << std::endl;
-    std::cout << (int)c.green << std::endl;
-    std::cout << (int)c.blue << std::endl;
-    std::cout << (int)c.alpha << std::endl;
-
+    Shader* shader = load_shader(rdir("/shaders/main.vert"), rdir("/shaders/main.frag"));
 
     // glClearColor(1,0.5,0.65,1);
-
+    Events events(&win);
     while (win.isOpen()) {
 
         if (events.jpressed(GLFW_KEY_ESCAPE)) {
@@ -35,11 +39,15 @@ int main()
             glClearColor(0.25,0.25,0.25,1);
         }
 
+        // shader->use();
+
         win.swapBuffers();
         win.clear();
 
         events.pullEvents();
     }
+
+    // delete shader;
 
     return 0;
 }

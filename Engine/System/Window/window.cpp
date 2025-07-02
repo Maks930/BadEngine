@@ -12,6 +12,13 @@ Window::Window(const WinSize &winSize, const std::string &title) :
         abort();
     }
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+    // glEnable(GL_DEPTH_TEST);
+    // glDepthFunc(GL_LESS);
+
     m_win = glfwCreateWindow(m_size.width, m_size.height, title.c_str(), nullptr, nullptr);
 
     if (!m_win) {
