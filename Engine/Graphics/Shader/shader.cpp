@@ -1,41 +1,28 @@
-#include <Shader/shader.h>
-
-#include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-Shader::Shader(uint32_t id) :_id(id)
-{
+#include <Shader/shader.h>
 
-}
+
+
+
+Shader::Shader(uint32_t id) : m_id(id) {}
 
 Shader::~Shader()
 {
-    glDeleteProgram(_id);
+    glDeleteShader(m_id);
 }
 
 void Shader::use()
 {
-    glUseProgram(_id);
+    glUseProgram(m_id);
 }
 
-void Shader::uniformMatrix(std::string name, glm::mat4 matrix)
-{
-    GLuint transformLoc = glGetUniformLocation(_id, name.c_str());
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(matrix));
-
-}
-
-void Shader::uniformFloat(std::string name, float number)
-{
-    GLuint transformLoc = glGetUniformLocation(_id, name.c_str());
-    glUniform1f(transformLoc, number);
-}
-
-Shader* load_shader(std::string vertexFile, std::string fragmentFile)
+Shader *Shader::load(const std::string &vertexFile, const std::string &fragmentFile)
 {
     std::string vertexCode;
     std::string fragmentCode;
@@ -65,6 +52,7 @@ Shader* load_shader(std::string vertexFile, std::string fragmentFile)
         std::cerr << "ERR:SHADER::FILE_NOT_SUCCESFULLY_READ\n";
         return nullptr;
     }
+
 
     const GLchar* vShaderCode = vertexCode.c_str();
     const GLchar* fShaderCode = fragmentCode.c_str();

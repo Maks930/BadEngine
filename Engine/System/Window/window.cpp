@@ -1,3 +1,6 @@
+#include <stdexcept>
+
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <Window/window.h>
@@ -27,6 +30,14 @@ Window::Window(const WinSize &winSize, const std::string &title) :
     }
 
     glfwMakeContextCurrent(m_win);
+    glfwSwapInterval(1);
+
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK) {
+        throw std::runtime_error("Failed to initialize GLEW");
+    }
+
+    glViewport(0, 0, winSize.width, winSize.height);
 
 }
 

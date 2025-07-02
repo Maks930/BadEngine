@@ -23,7 +23,7 @@ int main()
     Window win({640, 480}, "Base Window");
 
 
-    Shader* shader = load_shader(rdir("/shaders/main.vert"), rdir("/shaders/main.frag"));
+    Shader* shader = Shader::load(rdir("/shaders/main.vert"), rdir("/shaders/main.frag"));
 
     // glClearColor(1,0.5,0.65,1);
     Events events(&win);
@@ -47,7 +47,7 @@ int main()
         events.pullEvents();
     }
 
-    // delete shader;
+    delete shader;
 
     return 0;
 }
