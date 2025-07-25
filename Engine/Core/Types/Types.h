@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-typedef struct _win_size_ {
+typedef struct  _win_size_ {
     uint32_t width, height;
 
     _win_size_(uint32_t _width, uint32_t _height) :

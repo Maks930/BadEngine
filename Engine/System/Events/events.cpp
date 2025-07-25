@@ -4,7 +4,6 @@
 #include <Window/window.h>
 
 
-
 Events::Events(Window *window)
 {
     m_current_frame = 0;
@@ -49,6 +48,7 @@ bool Events::jpressed(const int &keycode)
     if (keycode < 0 || keycode >= MOUSE_BUTTONS) {
         return false;
     }
+
     return m_keys.test(keycode)
            && m_frames[keycode] == m_current_frame;
 }
@@ -58,6 +58,7 @@ bool Events::ipressed(const int &keycode)
     if (keycode < 0 || keycode >= MOUSE_BUTTONS) {
         return false;
     }
+
     return m_keys.test(keycode);
 }
 
@@ -70,8 +71,9 @@ bool Events::icliced(const int &button)
 bool Events::jcliced(const int &button)
 {
     int index = MOUSE_BUTTONS + button;
+
     return m_keys.test(index)
-            && m_frames[index] == m_current_frame;
+           && m_frames[index] == m_current_frame;
 }
 
 Mouse Events::getMouse() const
@@ -92,7 +94,7 @@ void Events::_key_callback(GLFWwindow *win, int key, int scancode, int action, i
     if (GLFW_PRESS == action) {
         instance->m_keys.set(key, true);
         instance->m_frames[key] = instance->m_current_frame;
-    } else if (GLFW_RELEASE) {
+    } else if (GLFW_RELEASE == action) {
         instance->m_keys.set(key, false);
         instance->m_frames[key] = instance->m_current_frame;
     }

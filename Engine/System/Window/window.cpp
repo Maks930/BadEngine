@@ -19,8 +19,8 @@ Window::Window(const WinSize &winSize, const std::string &title) :
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-    // glEnable(GL_DEPTH_TEST);
-    // glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 
     m_win = glfwCreateWindow(m_size.width, m_size.height, title.c_str(), nullptr, nullptr);
 
@@ -70,4 +70,9 @@ void Window::close()
 void Window::setCursorMode(const int &mode)
 {
     glfwSetInputMode(m_win, GLFW_CURSOR, mode);
+}
+
+WinSize Window::getSize() const
+{
+    return m_size;
 }

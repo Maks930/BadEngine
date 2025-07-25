@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/ext.hpp>
+
 #include <Shader/shader.h>
 
 
@@ -20,6 +22,24 @@ Shader::~Shader()
 void Shader::use()
 {
     glUseProgram(m_id);
+}
+
+void Shader::uniformMatrix(const Shader &shader, const std::string &name, const glm::mat4 &matrix)
+{
+    GLuint transformLoc = glGetUniformLocation(shader.m_id, name.c_str());
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::uniformVec3(const Shader& shader, const std::string& name, const glm::vec3& vec) 
+{
+    GLuint transformLoc = glGetUniformLocation(shader.m_id, name.c_str());
+    glUniform3fv(transformLoc, 1, glm::value_ptr(vec));
+}
+
+void Shader::uniformFloat(const Shader &shader, const std::string &name, const float &number)
+{
+    GLuint transformLoc = glGetUniformLocation(shader.m_id, name.c_str());
+    glUniform1f(transformLoc, number);
 }
 
 Shader *Shader::load(const std::string &vertexFile, const std::string &fragmentFile)

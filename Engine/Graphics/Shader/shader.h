@@ -3,7 +3,10 @@
 
 #include <string>
 
+#include <glm/glm.hpp>
+
 #include <Types/Types.h>
+
 
 class Shader
 {
@@ -16,6 +19,9 @@ public:
 
     void use();
 
+    static void uniformMatrix(const Shader& shader, const std::string& name, const glm::mat4& matrix);
+    static void uniformFloat(const Shader& shader, const std::string& name, const float& number);
+    static void uniformVec3(const Shader& shader, const std::string& name, const glm::vec3& vec);
 
     static Shader* load(const std::string& vertexFile, const std::string& fragmentFile);
 };

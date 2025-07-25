@@ -40,6 +40,8 @@ public:
     void setCursorMode(const int& mode);
 
 
+    WinSize getSize() const;
+
     friend class Events;
 
 };

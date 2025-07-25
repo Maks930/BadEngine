@@ -25,8 +25,6 @@ private:
 
     Window*                         m_win;
 
-
-
 public:
     Events(Window* window);
     ~Events();
