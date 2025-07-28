@@ -55,7 +55,7 @@ int main()
         return -1;
     }
 
-    MountManager::mount("/shaders", std::string(std::getenv("USERPROFILE"))+"\\Desktop\\shaders");
+    MountManager::mount("/shaders", std::string(std::getenv("USERPROFILE"))+"\\Desktop\\sandbox\\shaders");
 
     Window win({1280, 720}, "Base Window");
 

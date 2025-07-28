@@ -1,9 +1,8 @@
+#include <Window/window.h>
 #include <stdexcept>
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <Window/window.h>
 
 
 Window::Window(const WinSize &winSize, const std::string &title) :
