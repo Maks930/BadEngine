@@ -55,9 +55,9 @@ int main()
         return -1;
     }
 
-    MountManager::mount("/shaders", std::string(std::getenv("USERPROFILE"))+"\\Desktop\\shaders");
+    MountManager::mount("/shaders", std::string(std::getenv("USERPROFILE"))+"\\Desktop\\sandbox\\shaders");
 
-    Window win({1280, 720}, "Base Window");
+    Window::init({ 1280, 720 }, "Test Window");
 
     Shader* shader = Shader::load(rdir("/shaders/main.vert"), rdir("/shaders/main.frag"));
 
@@ -90,71 +90,71 @@ int main()
     float cY = 0;
 
 
-    Events events(&win);
-    events.togleCursorVisibility();
+    Events::init();
+    Events::togleCursorVisibility();
+    
 
     auto DTYPE = GL_TRIANGLES;
 
-    while (win.isOpen()) {
+    while (Window::isOpen()) {
 
         float curTime = glfwGetTime();
         dlt = curTime - lastTime;
         lastTime = curTime;
 
-        if (events.jpressed(GLFW_KEY_ESCAPE)) {
-            win.close();
+        if (Events::jpressed(GLFW_KEY_ESCAPE)) {
+            Window::close();
         }
 
-        if (events.jpressed(GLFW_KEY_Z)) {
+        if (Events::jpressed(GLFW_KEY_Z)) {
             if (DTYPE == GL_TRIANGLES) DTYPE = GL_LINES;
             else DTYPE = GL_TRIANGLES;
         }
 
-        if (events.jpressed(GLFW_KEY_TAB)) {
-            events.togleCursorVisibility();
+        if (Events::jpressed(GLFW_KEY_TAB)) {
+            Events::togleCursorVisibility();
         }
 
-        if (events.ipressed(GLFW_KEY_S)) {
+        if (Events::ipressed(GLFW_KEY_S)) {
             auto position = camera->getPosition();
             position -= camera->getFront() * dlt * speed;
             camera->setPosition(position);
         }
 
-        if (events.ipressed(GLFW_KEY_W)) {
+        if (Events::ipressed(GLFW_KEY_W)) {
             auto position = camera->getPosition();
             position += camera->getFront() * dlt * speed;
             camera->setPosition(position);
         }
 
-        if (events.ipressed(GLFW_KEY_A)) {
+        if (Events::ipressed(GLFW_KEY_A)) {
             auto position = camera->getPosition();
             position -= camera->getRight() * dlt * speed;
             camera->setPosition(position);
         }
 
-        if (events.ipressed(GLFW_KEY_D)) {
+        if (Events::ipressed(GLFW_KEY_D)) {
             auto position = camera->getPosition();
             position += camera->getRight() * dlt * speed;
             camera->setPosition(position);
         }
 
-        if (events.ipressed(GLFW_KEY_SPACE)) {
+        if (Events::ipressed(GLFW_KEY_SPACE)) {
             auto position = camera->getPosition();
             position.y += dlt * speed;
             camera->setPosition(position);
         }
 
-        if (events.ipressed(GLFW_KEY_LEFT_SHIFT)) {
+        if (Events::ipressed(GLFW_KEY_LEFT_SHIFT)) {
             auto position = camera->getPosition();
             position.y -= dlt * speed;
             camera->setPosition(position);
         }
 
-
-        if (events.getMouse().cursorLocked)
+        if (Events::getMouse().cursorLocked)
         {
-            cX += -events.getMouse().dx / win.getSize().width;
-            cY += -events.getMouse().dy / win.getSize().height;
+            cX += -Events::getMouse().dx / Window::getSize().width;
+            cY += -Events::getMouse().dy / Window::getSize().height;
 
             camera->setRotation(glm::mat4(1.0f));
             camera->rotate(cY, cX, 0);
@@ -162,17 +162,17 @@ int main()
 
         shader->use();
         Shader::uniformMatrix(*shader, "model", model);
-        Shader::uniformMatrix(*shader, "projview", camera->getProjections(win.getSize()) * camera->getView());
+        Shader::uniformMatrix(*shader, "projview", camera->getProjections(Window::getSize()) * camera->getView());
 
         quad->draw(DTYPE);
 
         Shader::uniformMatrix(*shader, "model", model2);
         quad2->draw(DTYPE);
 
-        win.swapBuffers();
-        win.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        Window::swapBuffers();
+        Window::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        events.pullEvents();
+        Events::pullEvents();
     }
 
     delete shader;

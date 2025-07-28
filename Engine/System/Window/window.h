@@ -13,34 +13,29 @@ class GLFWwindow;
 class Window
 {
 private:
-    GLFWwindow* m_win;
-    std::string m_title;
-    WinSize m_size;
+    static GLFWwindow* m_win;
+    static std::string m_title;
+    static WinSize m_size;
 
 
 public:
-    explicit Window(const WinSize& winSize, const std::string& title);
-    ~Window();
+    //explicit Window(const WinSize& winSize, const std::string& title);
+    //~Window();
 
-    /** @see glfwSwapBuffers() */
-    void swapBuffers();
+    static void init(const WinSize& winSize, const std::string& title);
 
-    /**
-     * @see glClear()
-     * @param mask is OpenGL mask
-     */
-    void clear(const unsigned int& mask = GL_COLOR_BUFFER_BIT);
+    static void swapBuffers();
 
-    /** @brief return true if close flag is flase */
-    bool isOpen() const;
+    static void clear(const unsigned int& mask = GL_COLOR_BUFFER_BIT);
 
-    /** @brief set close flag; window close automaticly */
-    void close();
+    static bool isOpen();
 
-    void setCursorMode(const int& mode);
+    static void close();
+
+    static void setCursorMode(const int& mode);
 
 
-    WinSize getSize() const;
+    static WinSize getSize();
 
     friend class Events;
 

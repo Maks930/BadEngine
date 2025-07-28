@@ -1,3 +1,4 @@
+#include "window.h"
 #include <stdexcept>
 
 #include <GL/glew.h>
@@ -5,12 +6,14 @@
 
 #include <Window/window.h>
 
+GLFWwindow* Window::m_win = nullptr;
+std::string Window::m_title = "";
+WinSize Window::m_size = {0,0};
 
-Window::Window(const WinSize &winSize, const std::string &title) :
-    m_size(winSize),
-    m_title(title)
+void Window::init(const WinSize& winSize, const std::string& title)
 {
-
+    m_title = title;
+    m_size = winSize;
     if (!glfwInit()) {
         abort();
     }
@@ -38,12 +41,6 @@ Window::Window(const WinSize &winSize, const std::string &title) :
     }
 
     glViewport(0, 0, winSize.width, winSize.height);
-
-}
-
-Window::~Window()
-{
-    glfwTerminate();
 }
 
 void Window::swapBuffers()
@@ -57,7 +54,7 @@ void Window::clear(const unsigned int &mask)
     glClear(mask);
 }
 
-bool Window::isOpen() const
+bool Window::isOpen()
 {
     return !glfwWindowShouldClose(m_win);
 }
@@ -72,7 +69,7 @@ void Window::setCursorMode(const int &mode)
     glfwSetInputMode(m_win, GLFW_CURSOR, mode);
 }
 
-WinSize Window::getSize() const
+WinSize Window::getSize()
 {
     return m_size;
 }

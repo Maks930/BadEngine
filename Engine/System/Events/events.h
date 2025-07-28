@@ -13,33 +13,30 @@ class GLFWwindow;
 class Events
 {
 private:
-    std::bitset<1032>               m_keys;
-    std::unique_ptr<uint32_t[]>     m_frames;
-    uint32_t                        m_current_frame;
-    double                          m_deltaX;
-    double                          m_deltaY;
-    double                          m_x;
-    double                          m_y;
-    bool                            m_cursor_locked;
-    bool                            m_cursor_started;
-
-    Window*                         m_win;
+    static std::bitset<1032>               m_keys;
+    static std::unique_ptr<uint32_t[]>     m_frames;
+    static uint32_t                        m_current_frame;
+    static double                          m_deltaX;
+    static double                          m_deltaY;
+    static double                          m_x;
+    static double                          m_y;
+    static bool                            m_cursor_locked;
+    static bool                            m_cursor_started;
 
 public:
-    Events(Window* window);
-    ~Events();
+    static void init();
+      
+    static void pullEvents();
 
-    void pullEvents();
+    static bool jpressed(const int& keycode);
+    static bool ipressed(const int& keycode);
 
-    bool jpressed(const int& keycode);
-    bool ipressed(const int& keycode);
+    static bool icliced(const int& button);
+    static bool jcliced(const int& button);
 
-    bool icliced(const int& button);
-    bool jcliced(const int& button);
+    static Mouse getMouse();
 
-    Mouse getMouse() const;
-
-    void togleCursorVisibility();
+    static void togleCursorVisibility();
 
 
 private: // CallBacks
@@ -48,8 +45,6 @@ private: // CallBacks
     static void _mouse_position_callback(GLFWwindow* window, double xpos, double ypos);
     static void _window_size_callback(GLFWwindow* window, int width, int height);
     static void _framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-
 };
 
 #endif // EVENTS_H

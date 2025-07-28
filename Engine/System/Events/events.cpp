@@ -1,37 +1,31 @@
+#include "events.h"
 #include <GLFW/glfw3.h>
 
 #include <Events/events.h>
 #include <Window/window.h>
 
 
-Events::Events(Window *window)
+std::bitset<1032>               Events::m_keys{};
+std::unique_ptr<uint32_t[]>     Events::m_frames = std::make_unique<uint32_t[]>(1032);
+uint32_t                        Events::m_current_frame{0};
+double                          Events::m_deltaX{0};
+double                          Events::m_deltaY{0};
+double                          Events::m_x{0};
+double                          Events::m_y{0};
+bool                            Events::m_cursor_locked{false};
+bool                            Events::m_cursor_started{false};
+
+
+
+
+void Events::init()
 {
-    m_current_frame = 0;
-    m_frames = std::make_unique<uint32_t[]>(1032);
-
-    m_deltaX = 0;
-    m_deltaY = 0;
-
-    m_x = 0;
-    m_y = 0;
-
-    m_cursor_locked = false;
-    m_cursor_started = false;
-
-    m_win = window;
-
-    glfwSetWindowUserPointer(m_win->m_win, this);
-
-    glfwSetKeyCallback(m_win->m_win, Events::_key_callback);
-    glfwSetMouseButtonCallback(m_win->m_win, Events::_mouse_button_callback);
-    glfwSetCursorPosCallback(m_win->m_win, Events::_mouse_position_callback);
-    glfwSetWindowSizeCallback(m_win->m_win, Events::_window_size_callback);
-    glfwSetFramebufferSizeCallback(m_win->m_win, Events::_framebuffer_size_callback);
-
-}
-
-Events::~Events()
-{
+    
+    glfwSetKeyCallback(Window::m_win, Events::_key_callback);
+    glfwSetMouseButtonCallback(Window::m_win, Events::_mouse_button_callback);
+    glfwSetCursorPosCallback(Window::m_win, Events::_mouse_position_callback);
+    glfwSetWindowSizeCallback(Window::m_win, Events::_window_size_callback);
+    glfwSetFramebufferSizeCallback(Window::m_win, Events::_framebuffer_size_callback);
 }
 
 void Events::pullEvents()
@@ -76,7 +70,7 @@ bool Events::jcliced(const int &button)
            && m_frames[index] == m_current_frame;
 }
 
-Mouse Events::getMouse() const
+Mouse Events::getMouse()
 {
     return Mouse(m_x, m_y, m_deltaX, m_deltaY, m_cursor_locked, m_cursor_started);
 }
@@ -84,50 +78,45 @@ Mouse Events::getMouse() const
 void Events::togleCursorVisibility()
 {
     m_cursor_locked = !m_cursor_locked;
-    m_win->setCursorMode(m_cursor_locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    Window::setCursorMode(m_cursor_locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
 }
 
 void Events::_key_callback(GLFWwindow *win, int key, int scancode, int action, int mode)
 {
-    Events* instance = static_cast<Events*>(glfwGetWindowUserPointer(win));
 
     if (GLFW_PRESS == action) {
-        instance->m_keys.set(key, true);
-        instance->m_frames[key] = instance->m_current_frame;
+        Events::m_keys.set(key, true);
+        Events::m_frames[key] = Events::m_current_frame;
     } else if (GLFW_RELEASE == action) {
-        instance->m_keys.set(key, false);
-        instance->m_frames[key] = instance->m_current_frame;
+        Events::m_keys.set(key, false);
+        Events::m_frames[key] = Events::m_current_frame;
     }
 }
 
 void Events::_mouse_button_callback(GLFWwindow *window, int button, int action, int mode)
 {
-    Events* instace = static_cast<Events*>(glfwGetWindowUserPointer(window));
-
     if (action == GLFW_PRESS) {
-        instace->m_keys.set(button + MOUSE_BUTTONS, true);
-        instace->m_frames[button + MOUSE_BUTTONS] = instace->m_current_frame;
+         Events::m_keys.set(button + MOUSE_BUTTONS, true);
+         Events::m_frames[button + MOUSE_BUTTONS] = Events::m_current_frame;
     }
     else if (action == GLFW_RELEASE) {
-        instace->m_keys.set(button + MOUSE_BUTTONS, false);
-        instace->m_frames[button + MOUSE_BUTTONS] = instace->m_current_frame;
+         Events::m_keys.set(button + MOUSE_BUTTONS, false);
+         Events::m_frames[button + MOUSE_BUTTONS] = Events::m_current_frame;
     }
 
 }
 
 void Events::_mouse_position_callback(GLFWwindow *window, double xpos, double ypos)
 {
-    Events* instace = static_cast<Events*>(glfwGetWindowUserPointer(window));
-
-    if (instace->m_cursor_started) {
-        instace->m_deltaX += xpos - instace->m_x;
-        instace->m_deltaY += ypos - instace->m_y;
+    if (Events::m_cursor_started) {
+         Events::m_deltaX += xpos - Events::m_x;
+         Events::m_deltaY += ypos - Events::m_y;
     }
     else {
-        instace->m_cursor_started = true;
+        Events::m_cursor_started = true;
     }
-    instace->m_x = xpos;
-    instace->m_y = ypos;
+     Events::m_x = xpos;
+     Events::m_y = ypos;
 
 }
 
